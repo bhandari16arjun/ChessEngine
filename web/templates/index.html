@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Chess Engine</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="layout">
+        <!-- Main Board Panel -->
+        <div class="panel">
+            <div class="header">
+                <h1>AI CHESS ENGINE</h1>
+            </div>
+            <div id="chessboard"></div>
+        </div>
+
+        <!-- Sidebar Panel -->
+        <div class="panel sidebar">
+            <h2>Move Log</h2>
+            <div id="move-log"></div>
+            
+            <div id="status-text" class="status-indicator">
+                Connecting...
+            </div>
+            
+            <button class="btn-reset" onclick="resetGame()">New Game</button>
+        </div>
+    </div>
+
+    <!-- Game Over Overlay -->
+    <div id="game-over-overlay" class="overlay">
+        <div class="overlay-content">
+            <h1 id="game-over-message">Checkmate</h1>
+            <button class="btn-reset" onclick="resetGame()">Play Again</button>
+        </div>
+    </div>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html>

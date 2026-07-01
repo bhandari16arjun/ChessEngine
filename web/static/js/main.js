@@ -80,6 +80,32 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // Otherwise, select the piece
+        if (selectedSquare) {
+            let sRow = selectedSquare.row;
+            let sCol = selectedSquare.col;
+            
+            // If they clicked their own piece again, just re-select
+            const clickedPiece = gameState.board[row][col];
+            const selectedPiece = gameState.board[sRow][sCol];
+            if (clickedPiece !== "--" && clickedPiece[0] === selectedPiece[0]) {
+                // Check if it's a castling attempt (King clicking Rook)
+                if (selectedPiece[1] === 'K' && clickedPiece[1] === 'R') {
+                    if (col === 7 && validMovesForSelected.some(m => m.row === row && m.col === 6)) {
+                        makeMove(sRow, sCol, row, 6);
+                        return;
+                    } else if (col === 0 && validMovesForSelected.some(m => m.row === row && m.col === 2)) {
+                        makeMove(sRow, sCol, row, 2);
+                        return;
+                    }
+                }
+                selectedSquare = { row, col };
+                const key = `${row}-${col}`;
+                validMovesForSelected = gameState.valid_moves[key] || [];
+                renderBoard();
+                return;
+            }
+        }
+
         const piece = gameState.board[row][col];
         if (piece !== "--" && piece[0] === 'w') { // Only allow selecting own pieces
             selectedSquare = { row, col };
@@ -104,6 +130,18 @@ document.addEventListener("DOMContentLoaded", () => {
         const piece = gameState.board[startRow][startCol];
         gameState.board[startRow][startCol] = "--";
         gameState.board[endRow][endCol] = piece;
+        
+        // Optimistic UI for castling (moving the rook visually)
+        if (piece[1] === 'K' && Math.abs(startCol - endCol) === 2) {
+            if (endCol === 6) { // Kingside
+                gameState.board[startRow][5] = gameState.board[startRow][7];
+                gameState.board[startRow][7] = "--";
+            } else if (endCol === 2) { // Queenside
+                gameState.board[startRow][3] = gameState.board[startRow][0];
+                gameState.board[startRow][0] = "--";
+            }
+        }
+        
         selectedSquare = null;
         validMovesForSelected = [];
         renderBoard();

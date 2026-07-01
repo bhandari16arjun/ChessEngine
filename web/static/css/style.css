@@ -237,3 +237,28 @@ body {
     margin-bottom: 20px;
     color: #f8fafc;
 }
+
+/* Captured Pieces */
+.captured-section {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--glass-border);
+}
+
+.captured-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    min-height: 24px; /* maintain space even when empty */
+}
+
+.mini-piece {
+    width: 24px;
+    height: 24px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+}

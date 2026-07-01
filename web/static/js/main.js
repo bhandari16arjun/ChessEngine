@@ -18,6 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(data => {
                 gameState = data;
                 renderBoard();
+                updateCapturedPieces();
                 updateLogAndStatus();
                 checkGameOver();
             });
@@ -124,6 +125,57 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             // Fetch updated state (which includes AI's response)
             fetchState();
+        });
+    }
+
+    function updateCapturedPieces() {
+        const initialCounts = {
+            'w': { 'p': 8, 'R': 2, 'N': 2, 'B': 2, 'Q': 1, 'K': 1 },
+            'b': { 'p': 8, 'R': 2, 'N': 2, 'B': 2, 'Q': 1, 'K': 1 }
+        };
+        
+        const currentCounts = {
+            'w': { 'p': 0, 'R': 0, 'N': 0, 'B': 0, 'Q': 0, 'K': 0 },
+            'b': { 'p': 0, 'R': 0, 'N': 0, 'B': 0, 'Q': 0, 'K': 0 }
+        };
+
+        // Count current pieces on board
+        for (let row = 0; row < 8; row++) {
+            for (let col = 0; col < 8; col++) {
+                const piece = gameState.board[row][col];
+                if (piece !== "--") {
+                    const color = piece[0];
+                    const type = piece[1];
+                    currentCounts[color][type]++;
+                }
+            }
+        }
+
+        // Render captured by white (missing black pieces)
+        const whiteCapturedEl = document.getElementById('captured-by-white');
+        whiteCapturedEl.innerHTML = '';
+        const pieceOrder = ['Q', 'R', 'B', 'N', 'p']; // High value first
+        pieceOrder.forEach(type => {
+            const lost = initialCounts['b'][type] - currentCounts['b'][type];
+            for (let i = 0; i < lost; i++) {
+                const img = document.createElement("div");
+                img.className = "mini-piece";
+                img.style.backgroundImage = `url('/static/img/chesspieces/b${type}.png')`;
+                whiteCapturedEl.appendChild(img);
+            }
+        });
+
+        // Render captured by black (missing white pieces)
+        const blackCapturedEl = document.getElementById('captured-by-black');
+        blackCapturedEl.innerHTML = '';
+        pieceOrder.forEach(type => {
+            const lost = initialCounts['w'][type] - currentCounts['w'][type];
+            for (let i = 0; i < lost; i++) {
+                const img = document.createElement("div");
+                img.className = "mini-piece";
+                img.style.backgroundImage = `url('/static/img/chesspieces/w${type}.png')`;
+                blackCapturedEl.appendChild(img);
+            }
         });
     }
 

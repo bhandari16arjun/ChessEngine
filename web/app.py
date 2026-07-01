@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, jsonify, session
+from whitenoise import WhiteNoise
 import sys
 import os
 import secrets
@@ -11,9 +12,11 @@ import ChessAI
 
 base_dir = os.path.dirname(os.path.abspath(__file__))
 app = Flask(__name__, 
+            static_url_path='/static',
             static_folder=os.path.join(base_dir, 'static'),
             template_folder=os.path.join(base_dir, 'templates'))
 app.secret_key = secrets.token_hex(16)
+app.wsgi_app = WhiteNoise(app.wsgi_app, root=os.path.join(base_dir, 'static'), prefix='static/')
 
 # Global dictionary to map session IDs to GameState instances
 games = {}

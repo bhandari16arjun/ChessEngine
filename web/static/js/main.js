@@ -174,6 +174,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     window.resetGame = function() {
         fetch('/api/reset', { method: 'POST' })
-            .then(() => fetchState());
+            .then(() => {
+                window.location.reload();
+            });
     }
 });

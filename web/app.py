@@ -9,7 +9,10 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
 import chessengine
 import ChessAI
 
-app = Flask(__name__)
+base_dir = os.path.dirname(os.path.abspath(__file__))
+app = Flask(__name__, 
+            static_folder=os.path.join(base_dir, 'static'),
+            template_folder=os.path.join(base_dir, 'templates'))
 app.secret_key = secrets.token_hex(16)
 
 # Global dictionary to map session IDs to GameState instances

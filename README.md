@@ -12,7 +12,7 @@ Before you start, ensure you have the following installed on your system:
 1. **Clone the Repository**:
 
    ```bash
-   git clone https://github.com/ninjasatish/ChessEngine.git
+   git clone https://github.com/bhandari16arjun/ChessEngine.git
 
    ```
 2. **Install Pygame**:

@@ -107,6 +107,7 @@ document.addEventListener("DOMContentLoaded", () => {
         selectedSquare = null;
         validMovesForSelected = [];
         renderBoard();
+        updateCapturedPieces();
 
         fetch('/api/move', {
             method: 'POST',
